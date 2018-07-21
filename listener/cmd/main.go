@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/binary"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -21,16 +21,22 @@ func main() {
 	m.Post("/:serial/:model", func(req *http.Request, params martini.Params) {
 		serial := params["serial"]
 		model := params["model"]
-		var temp float64
-		if err := binary.Read(req.Body, binary.LittleEndian, &temp); err != nil {
+		msg := models.SensorMessage{}
+		if err := json.NewDecoder(req.Body).Decode(&msg); err != nil {
 			log.Fatalf("Error reading temperature: %+v.", err)
 		}
-		if err := msnger.Publish(models.TempReading{
+		jsonMsg, err := json.Marshal(models.TempReading{
 			Serial: serial,
 			Model:  model,
-			Temp:   temp,
-		}, "sensor"); err != nil {
+			Temp:   msg.Num,
+		})
+		if err != nil {
+			log.Printf("Error encoding message to json: %+v.", err)
+		}
+		if err := msnger.Publish(jsonMsg, "sensor"); err != nil {
 			log.Printf("Error publishing temp reading: %+v.", err)
 		}
 	})
+
+	m.Run()
 }
