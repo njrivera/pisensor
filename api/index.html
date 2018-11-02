@@ -7,7 +7,7 @@
         function watchTemp() {
             if (this.watching === undefined) {
                 this.watching = true;
-                ws = new WebSocket("ws://198.199.87.130:5556/temp");
+                ws = new WebSocket("ws://localhost:5556/temp");
                 ws.onmessage = function(msg) {
                     let d = JSON.parse(msg.data);
                     document.getElementById('serial').innerHTML = d.serial;
