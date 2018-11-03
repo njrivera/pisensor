@@ -7,7 +7,7 @@
         function watchTemp() {
             if (this.watching === undefined) {
                 this.watching = true;
-                ws = new WebSocket("ws://localhost:5556/temp");
+                ws = new WebSocket("ws://localhost:5556/livetemp");
                 ws.onmessage = function(msg) {
                     let d = JSON.parse(msg.data);
                     document.getElementById('serial').innerHTML = d.serial;
@@ -16,12 +16,21 @@
                 }
             }
         }
+        function sendFilter() {
+            if (typeof ws !== "undefined") {
+                let filterValues = document.getElementById('filter').value.split(',');
+                let msg = {serials: filterValues};
+                ws.send(JSON.stringify(msg));
+            }
+        }
     </script>
   </head>
   <body>
     <h2 id="serial"></h2>
     <h2 id="model"></h2>
     <h1 id="temp"></h1>
-    <button onclick="watchTemp()">Watch Temp</button>
+    <button onclick="watchTemp()">Watch Temp</button><br><br>
+    <input type="text" id="filter">
+    <button onclick="sendFilter()">Send Filter</button>
   </body>
 </html>

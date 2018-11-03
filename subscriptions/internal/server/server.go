@@ -42,6 +42,10 @@ func RunServer() {
 	go dist.DistributeToClients(dataChan)
 
 	clientChan := wsServer.ListenForNewClients()
+
+	log.Printf("Running subscriptions service on port %s...", port)
+	defer log.Printf("Stopped subscriptions service")
+
 	for c := range clientChan {
 		controller := control.NewController(c, dist)
 		log.Printf("Starting new websocket client: %s", c.GetName())

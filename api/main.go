@@ -1,8 +1,17 @@
 package main
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
+
+const (
+	port = "5557"
+)
 
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./")))
-	http.ListenAndServe(":5557", nil)
+
+	log.Printf("Running REST API on port %s...", port)
+	http.ListenAndServe(":"+port, nil)
 }
