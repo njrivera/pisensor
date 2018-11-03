@@ -8,8 +8,8 @@ import (
 	"github.com/pisensor/pkg/models"
 )
 
-func GoSubscribe(msnger messengertypes.Messenger) <-chan models.TempReading {
-	msgChan, err := msnger.Subscribe("sensor")
+func GoSubscribe(msnger messengertypes.Messenger, msgChannel string) <-chan models.TempReading {
+	msgChan, err := msnger.Subscribe(msgChannel)
 	if err != nil {
 		log.Fatalf("Error subscribing to sensor channel: %s.", err.Error())
 	}

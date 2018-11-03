@@ -7,12 +7,8 @@ import (
 	websocketTypes "github.com/Websocket/pkg/types"
 	"github.com/pisensor/pkg/models"
 	"github.com/pisensor/subscriptions/internal/distribution"
-	"github.com/pisensor/subscriptions/types"
+	"github.com/pisensor/subscriptions/pkg/types"
 )
-
-type Filter struct {
-	serials []string
-}
 
 type Controller struct {
 	clientConn  websocketTypes.Client
@@ -66,9 +62,9 @@ func (c *Controller) Close() {
 
 func ListenForFilters(client websocketTypes.Client, stopChan <-chan struct{}) <-chan *types.ServerFilter {
 	filterChan := make(chan *types.ServerFilter)
-	defer close(filterChan)
 
 	go func() {
+		defer close(filterChan)
 		for {
 			msg, err := client.Receive()
 			if err != nil {

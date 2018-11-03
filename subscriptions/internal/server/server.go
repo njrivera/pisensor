@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	addrEnv = "SUB_SERVER_ADDRESS"
-	portEnv = "SUBSCRIPTIONS_PORT"
+	addrEnv    = "SUB_SERVER_ADDRESS"
+	portEnv    = "SUB_PORT"
+	msgChannel = "temp_readings"
 )
 
 func RunServer() {
@@ -24,7 +25,7 @@ func RunServer() {
 		log.Fatalln("SUB_SERVER_ADDRESS not set")
 	}
 	if port == "" {
-		log.Fatalln("SUBSCRIPTIONS_PORT not set")
+		log.Fatalln("SUB_PORT not set")
 	}
 
 	wsServer, err := websocketfactory.NewDefaultWsServer(addr, port)
@@ -37,12 +38,13 @@ func RunServer() {
 	}
 	dist := distribution.NewDistributor()
 
-	dataChan := receiving.GoSubscribe(msnger)
+	dataChan := receiving.GoSubscribe(msnger, msgChannel)
 	go dist.DistributeToClients(dataChan)
 
 	clientChan := wsServer.ListenForNewClients()
 	for c := range clientChan {
 		controller := control.NewController(c, dist)
+		log.Printf("Starting new websocket client: %s", c.GetName())
 		go controller.RunClientController()
 	}
 }
