@@ -15,7 +15,7 @@ import (
 var (
 	numReadings = flag.Int("numReadings", 1000, "Number of readings to generate")
 	serial      = flag.String("serial", "", "Serial number for pi sensor")
-	addr        = "http://localhost:3000"
+	addr        = "http://localhost:5558"
 )
 
 func main() {

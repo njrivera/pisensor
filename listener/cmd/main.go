@@ -52,5 +52,5 @@ func main() {
 
 	log.Printf("Running listener service...")
 
-	m.Run()
+	m.RunOnAddr(":5558")
 }
