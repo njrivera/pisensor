@@ -7,5 +7,5 @@ import (
 )
 
 type DB interface {
-	GetTempsBetweenTimes(serial string, start time.Time, end time.Time) ([]models.TempReading, error)
+	GetTempsBetweenTimes(serial string, start, end time.Time) ([]models.TempReading, error)
 }
