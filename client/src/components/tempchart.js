@@ -19,7 +19,7 @@ export default class TempChart extends React.Component {
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="Temperature" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey='Temperature' stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     );

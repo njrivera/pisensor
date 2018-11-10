@@ -18,7 +18,7 @@ export default class ReadingsTable extends React.Component {
             rows: [],
             tempData: [],
             liveData: [],
-            liveRange: 10,
+            liveRange: 25,
             serial: '',
             serialList: '',
             start: new Date().toLocaleString(),
@@ -37,7 +37,7 @@ export default class ReadingsTable extends React.Component {
             let temps = JSON.parse(JSON.stringify(this.state.liveData));
 
             if (t.serial === 'a') {
-                temps.push({Time: new Date(t.time).toLocaleString(), Temperature: t.temp});
+                temps.push({Serial: t.serial, Time: new Date(t.time).toLocaleTimeString(), Temperature: t.temp});
             }
 
             if (temps.length > this.state.liveRange) {
@@ -94,16 +94,16 @@ export default class ReadingsTable extends React.Component {
     render() {
         return (
             <div>
-                
-                <Grid container spacing={24}>
+                <br/>
+                <Grid container spacing={0}>
                     <Grid container item xs={6}>
-                        <Paper>
+                        <Paper className='Paper'>
                             <TextField value={this.state.serial} label="Serial" onChange={event => this.setState({serial: event.target.value})}/>
                             <br/><br/>
                             <Grid container>
-                                <Grid container item xs={4}>
+                                <Grid container item xs={3}>
                                 </Grid>
-                                <Grid container item xs={4}>
+                                <Grid container item xs={6}>
                                     <Grid item xs={6}>
                                         <TempReadingTimePicker setTime={this.setStartTime} time={this.state.start} label="Start Time"/>
                                     </Grid>
@@ -111,17 +111,18 @@ export default class ReadingsTable extends React.Component {
                                         <TempReadingTimePicker setTime={this.setEndTime} time={this.state.end} label="End Time"/>
                                     </Grid>
                                 </Grid>
-                                <Grid container item xs={4}>
+                                <Grid container item xs={3}>
                                 </Grid>
                             <br/>
                             <TempChart tempData={this.state.tempData}/>
                             </Grid>
                             <Button variant="contained" color="primary" onClick={this.getReadings}> Get Historical Temp Readings </Button>
+                            <br/><br/>
                         </Paper>
                     </Grid>
 
                     <Grid container item xs={6}>
-                        <Paper>
+                        <Paper className='Paper'>
                             <Grid container>
                                 <Grid item xs={4}>
                                 </Grid>
@@ -137,11 +138,6 @@ export default class ReadingsTable extends React.Component {
                         </Paper>
                     </Grid>
                 </Grid>
-
-
-
-                
-                
                 <Paper>
                     <Table>
                         <TableHead>
