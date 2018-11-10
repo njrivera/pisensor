@@ -7,10 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TempReadingTimePicker from './timepicker';
-import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import TextField from '@material-ui/core/TextField';
-import { Paper } from '@material-ui/core';
+import { Paper, Grid } from '@material-ui/core';
 import TempChart from './tempchart';
 
 export default class ReadingsTable extends React.Component {
@@ -96,23 +94,54 @@ export default class ReadingsTable extends React.Component {
     render() {
         return (
             <div>
-                <br/>
-                <TextField value={this.state.serialList} label="Serial List Filter" onChange={event => this.setState({serialList: event.target.value})}/>
-                <Button variant="contained" color="primary" onClick={this.sendFilter}> Get Live Temp Data </Button>
-                <Paper>
-                    <TempChart tempData={this.state.liveData}/>
-                </Paper>
-                <br/>
-                <TextField value={this.state.serial} label="Serial" onChange={event => this.setState({serial: event.target.value})}/>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <TempReadingTimePicker setTime={this.setStartTime} time={this.state.start}/>
-                    <TempReadingTimePicker setTime={this.setEndTime} time={this.state.end}/>
-                </MuiPickersUtilsProvider>
-                <br/>
-                <Paper>
-                    <TempChart tempData={this.state.tempData}/>
-                </Paper>
-                <Button variant="contained" color="primary" onClick={this.getReadings}> Get Historical Temp Readings </Button>
+                
+                <Grid container spacing={24}>
+                    <Grid container item xs={6}>
+                        <Paper>
+                            <TextField value={this.state.serial} label="Serial" onChange={event => this.setState({serial: event.target.value})}/>
+                            <br/><br/>
+                            <Grid container>
+                                <Grid container item xs={4}>
+                                </Grid>
+                                <Grid container item xs={4}>
+                                    <Grid item xs={6}>
+                                        <TempReadingTimePicker setTime={this.setStartTime} time={this.state.start} label="Start Time"/>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TempReadingTimePicker setTime={this.setEndTime} time={this.state.end} label="End Time"/>
+                                    </Grid>
+                                </Grid>
+                                <Grid container item xs={4}>
+                                </Grid>
+                            <br/>
+                            <TempChart tempData={this.state.tempData}/>
+                            </Grid>
+                            <Button variant="contained" color="primary" onClick={this.getReadings}> Get Historical Temp Readings </Button>
+                        </Paper>
+                    </Grid>
+
+                    <Grid container item xs={6}>
+                        <Paper>
+                            <Grid container>
+                                <Grid item xs={4}>
+                                </Grid>
+                                <Grid item xs={4}>
+                                <TextField value={this.state.serialList} label="Serial List Filter" onChange={event => this.setState({serialList: event.target.value})}/>
+                                </Grid>
+                                <Grid item xs={4}>
+                                </Grid>
+                                <br/><br/><br/><br/>
+                                <TempChart tempData={this.state.liveData}/>
+                            </Grid>
+                            <Button variant="contained" color="primary" onClick={this.sendFilter}> Get Live Temp Data </Button>
+                        </Paper>
+                    </Grid>
+                </Grid>
+
+
+
+                
+                
                 <Paper>
                     <Table>
                         <TableHead>

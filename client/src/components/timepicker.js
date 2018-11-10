@@ -9,10 +9,14 @@ export default class TempReadingTimePicker extends PureComponent {
 
     render() {
         return (
-            <DateTimePicker
-                onChange={this.handleDateChange}
-                value={this.props.time}
-            />
+            <div className="picker">
+                <DateTimePicker
+                    onChange={this.handleDateChange}
+                    value={this.props.time}
+                    label={this.props.label}
+                    showTodayButton
+                />
+            </div>
         );
     }
 }
